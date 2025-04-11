@@ -1,0 +1,343 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 71
+Server version: 8.0.41 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| nit                |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use nit;
+Database changed
+mysql> select * from customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> use nit
+Database changed
+mysql> create table orders(
+    -> OID int,
+    -> DATE int,
+    -> CUSTOMER_ID int,
+    -> AMOUNT  int);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from orders;
+Empty set (0.00 sec)
+
+mysql> insert into orders values(102,2009-10-08 00.00.00,3,3000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '00.00.00,3,3000)' at line 1
+mysql> insert into orders values(102,2009-10-08,3,3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into orders values(100,2009-10-08,3,1500),(101,2009-11-20,2,1560),(103,2008-05-20,4,2060);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from orders;
++------+------+-------------+--------+
+| OID  | DATE | CUSTOMER_ID | AMOUNT |
++------+------+-------------+--------+
+|  102 | 1991 |           3 |   3000 |
+|  100 | 1991 |           3 |   1500 |
+|  101 | 1978 |           2 |   1560 |
+|  103 | 1983 |           4 |   2060 |
++------+------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> desc orders;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| OID         | int  | YES  |     | NULL    |       |
+| DATE        | int  | YES  |     | NULL    |       |
+| CUSTOMER_ID | int  | YES  |     | NULL    |       |
+| AMOUNT      | int  | YES  |     | NULL    |       |
++-------------+------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> update orders set DATE = 1991-10-08 00:00:00 where id=3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '00:00:00 where id=3' at line 1
+mysql> update orders set DATE = 1991-10-08 00:00:00 where OID=102;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '00:00:00 where OID=102' at line 1
+mysql> select id,name,age,amount from customers,orders where customers.ID=orders.CUSTOMERS_ID;
+ERROR 1054 (42S22): Unknown column 'orders.CUSTOMERS_ID' in 'where clause'
+mysql> select id,name,age,amount from customers,orders where customers.ID=orders.CUSTOMER_ID;
++------+----------+------+--------+
+| id   | name     | age  | amount |
++------+----------+------+--------+
+|    2 | khaliyan |   25 |   1560 |
+|    3 | kaushik  |   23 |   1500 |
+|    3 | kaushik  |   23 |   3000 |
+|    4 | chaitali |   25 |   2060 |
++------+----------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+------+-------------+--------+
+| OID  | DATE | CUSTOMER_ID | AMOUNT |
++------+------+-------------+--------+
+|  102 | 1991 |           3 |   3000 |
+|  100 | 1991 |           3 |   1500 |
+|  101 | 1978 |           2 |   1560 |
+|  103 | 1983 |           4 |   2060 |
++------+------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select id,name,amount date from customers inner join orders on customers.ID=orders.CUSTOMER_ID;
++------+----------+------+
+| id   | name     | date |
++------+----------+------+
+|    2 | khaliyan | 1560 |
+|    3 | kaushik  | 1500 |
+|    3 | kaushik  | 3000 |
+|    4 | chaitali | 2060 |
++------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+------+-------------+--------+
+| OID  | DATE | CUSTOMER_ID | AMOUNT |
++------+------+-------------+--------+
+|  102 | 1991 |           3 |   3000 |
+|  100 | 1991 |           3 |   1500 |
+|  101 | 1978 |           2 |   1560 |
+|  103 | 1983 |           4 |   2060 |
++------+------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select ID,NAME,AMOUNT,DATE FROM customers left join orders on customers.ID=orders.CUSTOMERS_ID;
+ERROR 1054 (42S22): Unknown column 'orders.CUSTOMERS_ID' in 'on clause'
+mysql> select ID,NAME,AMOUNT,DATE FROM customers left join orders on customers.ID=orders.CUSTOMER_ID;
++------+----------+--------+------+
+| ID   | NAME     | AMOUNT | DATE |
++------+----------+--------+------+
+|    1 | ramesh   |   NULL | NULL |
+|    2 | khaliyan |   1560 | 1978 |
+|    3 | kaushik  |   1500 | 1991 |
+|    3 | kaushik  |   3000 | 1991 |
+|    4 | chaitali |   2060 | 1983 |
+|    5 | hardik   |   NULL | NULL |
+|    6 | komal    |   NULL | NULL |
++------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT ID,NAME,AMOUNT,DATE from customers right join oeders on customers.ID=orders.CUSTOMER_ID;
+ERROR 1146 (42S02): Table 'nit.oeders' doesn't exist
+mysql> SELECT ID,NAME,AMOUNT,DATE from customers right join orders on customers.ID=orders.CUSTOMER_ID;
++------+----------+--------+------+
+| ID   | NAME     | AMOUNT | DATE |
++------+----------+--------+------+
+|    3 | kaushik  |   3000 | 1991 |
+|    3 | kaushik  |   1500 | 1991 |
+|    2 | khaliyan |   1560 | 1978 |
+|    4 | chaitali |   2060 | 1983 |
++------+----------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+------+-------------+--------+
+| OID  | DATE | CUSTOMER_ID | AMOUNT |
++------+------+-------------+--------+
+|  102 | 1991 |           3 |   3000 |
+|  100 | 1991 |           3 |   1500 |
+|  101 | 1978 |           2 |   1560 |
+|  103 | 1983 |           4 |   2060 |
++------+------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select ID,NAME,AMOUNT,DATE from customers full join orders on customers.ID=orders.CUSTOMER_ID;
+ERROR 1054 (42S22): Unknown column 'customers.ID' in 'on clause'
+mysql> SELECT ID,NAME,AMOUNT,DATE FROM customers full join orders on customers.ID=orders.CUSTOMER_ID;
+ERROR 1054 (42S22): Unknown column 'customers.ID' in 'on clause'
+mysql> SELECT ID,NAME,AMOUNT,DATE from customers left join orders on customers.ID=orders.CUSTOMER_ID
+    -> UNION ALL
+    -> SELECT ID,NAME,AMOUNT,DATE FROM customers right join orders on customers.ID=orders.CUSTOMER_ID;
++------+----------+--------+------+
+| ID   | NAME     | AMOUNT | DATE |
++------+----------+--------+------+
+|    1 | ramesh   |   NULL | NULL |
+|    2 | khaliyan |   1560 | 1978 |
+|    3 | kaushik  |   1500 | 1991 |
+|    3 | kaushik  |   3000 | 1991 |
+|    4 | chaitali |   2060 | 1983 |
+|    5 | hardik   |   NULL | NULL |
+|    6 | komal    |   NULL | NULL |
+|    3 | kaushik  |   3000 | 1991 |
+|    3 | kaushik  |   1500 | 1991 |
+|    2 | khaliyan |   1560 | 1978 |
+|    4 | chaitali |   2060 | 1983 |
++------+----------+--------+------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> SQL> SELECT a.ID, b.NAME, a.SALARY FROM CUSTOMERS a, CUSTOMERS b WHERE a.SALARY < b.SALARY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SQL> SELECT a.ID, b.NAME, a.SALARY FROM CUSTOMERS a, CUSTOMERS b WHERE a.SALARY ' at line 1
+mysql> select ID,NAME,AMOUNT,DATE FROM customers,orders;
++------+----------+--------+------+
+| ID   | NAME     | AMOUNT | DATE |
++------+----------+--------+------+
+|    1 | ramesh   |   2060 | 1983 |
+|    1 | ramesh   |   1560 | 1978 |
+|    1 | ramesh   |   1500 | 1991 |
+|    1 | ramesh   |   3000 | 1991 |
+|    2 | khaliyan |   2060 | 1983 |
+|    2 | khaliyan |   1560 | 1978 |
+|    2 | khaliyan |   1500 | 1991 |
+|    2 | khaliyan |   3000 | 1991 |
+|    3 | kaushik  |   2060 | 1983 |
+|    3 | kaushik  |   1560 | 1978 |
+|    3 | kaushik  |   1500 | 1991 |
+|    3 | kaushik  |   3000 | 1991 |
+|    4 | chaitali |   2060 | 1983 |
+|    4 | chaitali |   1560 | 1978 |
+|    4 | chaitali |   1500 | 1991 |
+|    4 | chaitali |   3000 | 1991 |
+|    5 | hardik   |   2060 | 1983 |
+|    5 | hardik   |   1560 | 1978 |
+|    5 | hardik   |   1500 | 1991 |
+|    5 | hardik   |   3000 | 1991 |
+|    6 | komal    |   2060 | 1983 |
+|    6 | komal    |   1560 | 1978 |
+|    6 | komal    |   1500 | 1991 |
+|    6 | komal    |   3000 | 1991 |
++------+----------+--------+------+
+24 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------+----------+------+------------+--------+---------+
+| ID   | NAME     | AGE  | ADDRESS    | SALARY | phoneNo |
++------+----------+------+------------+--------+---------+
+|    1 | ramesh   |   32 | Ahemadabab |   2000 |   83469 |
+|    2 | khaliyan |   25 | Delhi      |   1500 |   83468 |
+|    3 | kaushik  |   23 | Kota       |   2000 |   83467 |
+|    4 | chaitali |   25 | Mumbai     |   6500 |   83466 |
+|    5 | hardik   |   27 | Bhopal     |   8500 |   83465 |
+|    6 | komal    |   22 | pune       |   4500 |   83462 |
++------+----------+------+------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select from customers where column like 'h%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from customers where column like 'h%'' at line 1
+mysql> select * from customers where name like 'h%';
++------+--------+------+---------+--------+---------+
+| ID   | NAME   | AGE  | ADDRESS | SALARY | phoneNo |
++------+--------+------+---------+--------+---------+
+|    5 | hardik |   27 | Bhopal  |   8500 |   83465 |
++------+--------+------+---------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from  customers where name like '%l';
++------+-------+------+---------+--------+---------+
+| ID   | NAME  | AGE  | ADDRESS | SALARY | phoneNo |
++------+-------+------+---------+--------+---------+
+|    6 | komal |   22 | pune    |   4500 |   83462 |
++------+-------+------+---------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from customers where salary like '200%';
++------+---------+------+------------+--------+---------+
+| ID   | NAME    | AGE  | ADDRESS    | SALARY | phoneNo |
++------+---------+------+------------+--------+---------+
+|    1 | ramesh  |   32 | Ahemadabab |   2000 |   83469 |
+|    3 | kaushik |   23 | Kota       |   2000 |   83467 |
++------+---------+------+------------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from orders;
++------+------+-------------+--------+
+| OID  | DATE | CUSTOMER_ID | AMOUNT |
++------+------+-------------+--------+
+|  102 | 1991 |           3 |   3000 |
+|  100 | 1991 |           3 |   1500 |
+|  101 | 1978 |           2 |   1560 |
+|  103 | 1983 |           4 |   2060 |
++------+------+-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update orders set DATE=1991 where CUSTOMER_ID=3;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+mysql> update orders set DATE=1991-10-08 00:00:00 where CUSTOMER_ID=3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '00:00:00 where CUSTOMER_ID=3' at line 1
+mysql> mysql> SELECT DATE_ADD('1998-01-02', INTERVAL 31 DAY);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql> SELECT DATE_ADD('1998-01-02', INTERVAL 31 DAY)' at line 1
+mysql> ^C
+mysql>

@@ -1,0 +1,314 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 59
+Server version: 8.0.41 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| nit                |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use nit;
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_nit |
++---------------+
+| customers     |
+| student       |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| harika | 12 | hyd     |    78 |
+| hari   | 40 | bng     |    66 |
++--------+----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> delete from student where name='hari';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select(marks)from student;
++-------+
+| marks |
++-------+
+|    78 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select avg(marks) from student;
++------------+
+| avg(marks) |
++------------+
+|    78.0000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(name) from student;
++-------------+
+| count(name) |
++-------------+
+|           1 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(marks) from student;
++------------+
+| max(marks) |
++------------+
+|         78 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select min(marks) from students;
+ERROR 1146 (42S02): Table 'nit.students' doesn't exist
+mysql> select min(marks) from student;
++------------+
+| min(marks) |
++------------+
+|         78 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student order by marks;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from student order by marks desc;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into student values(01,'hanshu','mumbai',67);
+ERROR 1366 (HY000): Incorrect integer value: 'hanshu' for column 'id' at row 1
+mysql> insert into student values('hanshu',01,'mumbai',75);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student where name like 'a%';
+Empty set (0.00 sec)
+
+mysql> select * from student where name like 'h%';
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| hanshu |  1 | mumbai  |    75 |
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student where name like '%a';
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into student values('akhi',02,'delhi',89);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student where name like '_a%';
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| hanshu |  1 | mumbai  |    75 |
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student where name like '%_k';
+Empty set (0.00 sec)
+
+mysql> select * from student;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| hanshu |  1 | mumbai  |    75 |
+| akhi   |  2 | delhi   |    89 |
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into  student values('ramu',03,'Mp',45);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| hanshu |  1 | mumbai  |    75 |
+| akhi   |  2 | delhi   |    89 |
+| ramu   |  3 | Mp      |    45 |
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table emp(id not null primary key ,salary int, empcode int,name varchar(30));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null primary key ,salary int, empcode int,name varchar(30))' at line 1
+mysql> use nit;
+Database changed
+mysql> create table emp(id not null primary key, salary int, emcode int,name varchar(30));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null primary key, salary int, emcode int,name varchar(30))' at line 1
+mysql> create table emp(id int not null primary key,salary int,empcode int,name varchar(30));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into emp values(12,20000,102,'aman'),(23,60000,104,'arup'),(34,90000,106,'sam'),(78,30000,105,'max'),(80,25000,103,'ram');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select*from emp;
++----+--------+---------+------+
+| id | salary | empcode | name |
++----+--------+---------+------+
+| 12 |  20000 |     102 | aman |
+| 23 |  60000 |     104 | arup |
+| 34 |  90000 |     106 | sam  |
+| 78 |  30000 |     105 | max  |
+| 80 |  25000 |     103 | ram  |
++----+--------+---------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student inner join on student.id=emp.id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on student.id=emp.id' at line 1
+mysql> select * from student;
++--------+----+---------+-------+
+| name   | id | address | marks |
++--------+----+---------+-------+
+| hanshu |  1 | mumbai  |    75 |
+| akhi   |  2 | delhi   |    89 |
+| ramu   |  3 | Mp      |    45 |
+| harika | 12 | hyd     |    78 |
++--------+----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++----+--------+---------+------+
+| id | salary | empcode | name |
++----+--------+---------+------+
+| 12 |  20000 |     102 | aman |
+| 23 |  60000 |     104 | arup |
+| 34 |  90000 |     106 | sam  |
+| 78 |  30000 |     105 | max  |
+| 80 |  25000 |     103 | ram  |
++----+--------+---------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student left join emp on student.id=emp.id;
++--------+----+---------+-------+------+--------+---------+------+
+| name   | id | address | marks | id   | salary | empcode | name |
++--------+----+---------+-------+------+--------+---------+------+
+| hanshu |  1 | mumbai  |    75 | NULL |   NULL |    NULL | NULL |
+| akhi   |  2 | delhi   |    89 | NULL |   NULL |    NULL | NULL |
+| ramu   |  3 | Mp      |    45 | NULL |   NULL |    NULL | NULL |
+| harika | 12 | hyd     |    78 |   12 |  20000 |     102 | aman |
++--------+----+---------+-------+------+--------+---------+------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student inner join emp on student.id=emp.id;
++--------+----+---------+-------+----+--------+---------+------+
+| name   | id | address | marks | id | salary | empcode | name |
++--------+----+---------+-------+----+--------+---------+------+
+| harika | 12 | hyd     |    78 | 12 |  20000 |     102 | aman |
++--------+----+---------+-------+----+--------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from student right join emp on student.id=emp.id;
++--------+------+---------+-------+----+--------+---------+------+
+| name   | id   | address | marks | id | salary | empcode | name |
++--------+------+---------+-------+----+--------+---------+------+
+| harika |   12 | hyd     |    78 | 12 |  20000 |     102 | aman |
+| NULL   | NULL | NULL    |  NULL | 23 |  60000 |     104 | arup |
+| NULL   | NULL | NULL    |  NULL | 34 |  90000 |     106 | sam  |
+| NULL   | NULL | NULL    |  NULL | 78 |  30000 |     105 | max  |
+| NULL   | NULL | NULL    |  NULL | 80 |  25000 |     103 | ram  |
++--------+------+---------+-------+----+--------+---------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student cross join emp;
++--------+----+---------+-------+----+--------+---------+------+
+| name   | id | address | marks | id | salary | empcode | name |
++--------+----+---------+-------+----+--------+---------+------+
+| harika | 12 | hyd     |    78 | 12 |  20000 |     102 | aman |
+| ramu   |  3 | Mp      |    45 | 12 |  20000 |     102 | aman |
+| akhi   |  2 | delhi   |    89 | 12 |  20000 |     102 | aman |
+| hanshu |  1 | mumbai  |    75 | 12 |  20000 |     102 | aman |
+| harika | 12 | hyd     |    78 | 23 |  60000 |     104 | arup |
+| ramu   |  3 | Mp      |    45 | 23 |  60000 |     104 | arup |
+| akhi   |  2 | delhi   |    89 | 23 |  60000 |     104 | arup |
+| hanshu |  1 | mumbai  |    75 | 23 |  60000 |     104 | arup |
+| harika | 12 | hyd     |    78 | 34 |  90000 |     106 | sam  |
+| ramu   |  3 | Mp      |    45 | 34 |  90000 |     106 | sam  |
+| akhi   |  2 | delhi   |    89 | 34 |  90000 |     106 | sam  |
+| hanshu |  1 | mumbai  |    75 | 34 |  90000 |     106 | sam  |
+| harika | 12 | hyd     |    78 | 78 |  30000 |     105 | max  |
+| ramu   |  3 | Mp      |    45 | 78 |  30000 |     105 | max  |
+| akhi   |  2 | delhi   |    89 | 78 |  30000 |     105 | max  |
+| hanshu |  1 | mumbai  |    75 | 78 |  30000 |     105 | max  |
+| harika | 12 | hyd     |    78 | 80 |  25000 |     103 | ram  |
+| ramu   |  3 | Mp      |    45 | 80 |  25000 |     103 | ram  |
+| akhi   |  2 | delhi   |    89 | 80 |  25000 |     103 | ram  |
+| hanshu |  1 | mumbai  |    75 | 80 |  25000 |     103 | ram  |
++--------+----+---------+-------+----+--------+---------+------+
+20 rows in set (0.00 sec)
+
+mysql> select * from emp cross join student;
++----+--------+---------+------+--------+----+---------+-------+
+| id | salary | empcode | name | name   | id | address | marks |
++----+--------+---------+------+--------+----+---------+-------+
+| 12 |  20000 |     102 | aman | harika | 12 | hyd     |    78 |
+| 12 |  20000 |     102 | aman | ramu   |  3 | Mp      |    45 |
+| 12 |  20000 |     102 | aman | akhi   |  2 | delhi   |    89 |
+| 12 |  20000 |     102 | aman | hanshu |  1 | mumbai  |    75 |
+| 23 |  60000 |     104 | arup | harika | 12 | hyd     |    78 |
+| 23 |  60000 |     104 | arup | ramu   |  3 | Mp      |    45 |
+| 23 |  60000 |     104 | arup | akhi   |  2 | delhi   |    89 |
+| 23 |  60000 |     104 | arup | hanshu |  1 | mumbai  |    75 |
+| 34 |  90000 |     106 | sam  | harika | 12 | hyd     |    78 |
+| 34 |  90000 |     106 | sam  | ramu   |  3 | Mp      |    45 |
+| 34 |  90000 |     106 | sam  | akhi   |  2 | delhi   |    89 |
+| 34 |  90000 |     106 | sam  | hanshu |  1 | mumbai  |    75 |
+| 78 |  30000 |     105 | max  | harika | 12 | hyd     |    78 |
+| 78 |  30000 |     105 | max  | ramu   |  3 | Mp      |    45 |
+| 78 |  30000 |     105 | max  | akhi   |  2 | delhi   |    89 |
+| 78 |  30000 |     105 | max  | hanshu |  1 | mumbai  |    75 |
+| 80 |  25000 |     103 | ram  | harika | 12 | hyd     |    78 |
+| 80 |  25000 |     103 | ram  | ramu   |  3 | Mp      |    45 |
+| 80 |  25000 |     103 | ram  | akhi   |  2 | delhi   |    89 |
+| 80 |  25000 |     103 | ram  | hanshu |  1 | mumbai  |    75 |
++----+--------+---------+------+--------+----+---------+-------+
+20 rows in set (0.00 sec)
+
+mysql>
