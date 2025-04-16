@@ -1,1 +1,2 @@
 # python_programmer
+TEXT TO IMAGE BY USING STABLE DIFUSSION
